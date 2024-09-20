@@ -23,4 +23,5 @@ from mk_form import views
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", views.HomeView.as_view(), name="home"),
+    path("data_form", views.DataCreateView.as_view(), name="form"),
 ]
