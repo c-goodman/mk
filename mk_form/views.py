@@ -1,3 +1,7 @@
-from django.shortcuts import render
+from datetime import datetime
+from django.views.generic import TemplateView
 
-# Create your views here.
+
+class HomeView(TemplateView):
+    template_name = "mk_form/home.html"
+    extra_context = {"today": datetime.today()}
