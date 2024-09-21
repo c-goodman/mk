@@ -1,6 +1,11 @@
 from django.db import models
 
 
+class BoolCategory(models.TextChoices):
+    YES = "Yes"
+    NO = "No"
+
+
 class PlayerCategory(models.TextChoices):
     RANDY = "Randy"
     COOPER = "Cooper"
@@ -10,13 +15,6 @@ class GameTypeCategory(models.TextChoices):
     TWO = "2"
     THREE = "3"
     FOUR = "4"
-
-
-class PlaceCategory(models.TextChoices):
-    FIRST = "1"
-    SECOND = "2"
-    THIRD = "3"
-    FOURTH = "4"
 
 
 class MapCategory(models.TextChoices):
@@ -39,19 +37,21 @@ class MapCategory(models.TextChoices):
 
 class Data(models.Model):
 
-    uid = models.IntegerField(verbose_name="UID", primary_key=True, default=1)
+    uid = models.AutoField(
+        verbose_name="UID", primary_key=True, default=1, auto_created=True, unique=True
+    )
 
     created = models.DateTimeField(auto_now_add=True)
     edited = models.DateTimeField(auto_now=True)
 
-    session_uid = models.IntegerField(verbose_name="Session UID", default=1)
-
-    player = models.CharField(
-        verbose_name="Player",
-        max_length=40,
-        choices=PlayerCategory.choices,
-        default=PlayerCategory.RANDY,
+    new_session = models.CharField(
+        verbose_name="New Session",
+        max_length=3,
+        choices=BoolCategory.choices,
+        default=BoolCategory.NO,
     )
+
+    session_uid = models.IntegerField(verbose_name="Session UID", default=1)
 
     game_type = models.CharField(
         verbose_name="Game Type",
@@ -60,11 +60,32 @@ class Data(models.Model):
         default=GameTypeCategory.FOUR,
     )
 
-    place = models.CharField(
-        verbose_name="Place",
-        max_length=1,
-        choices=PlaceCategory.choices,
-        default=PlaceCategory.FIRST,
+    player_first = models.CharField(
+        verbose_name="Player (1st)",
+        max_length=40,
+        choices=PlayerCategory.choices,
+        default=PlayerCategory.RANDY,
+    )
+
+    player_second = models.CharField(
+        verbose_name="Player (2nd)",
+        max_length=40,
+        choices=PlayerCategory.choices,
+        default=PlayerCategory.RANDY,
+    )
+
+    player_third = models.CharField(
+        verbose_name="Player (3rd)",
+        max_length=40,
+        choices=PlayerCategory.choices,
+        default=PlayerCategory.RANDY,
+    )
+
+    player_fourth = models.CharField(
+        verbose_name="Player (4th)",
+        max_length=40,
+        choices=PlayerCategory.choices,
+        default=PlayerCategory.RANDY,
     )
 
     map_choice = models.CharField(
