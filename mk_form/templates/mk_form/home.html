@@ -3,5 +3,8 @@
 <div class="my-5 text-center container">
     <h1>Welcome to Mario Kart!</h1>
     <p>Date: {{today}}</p>
+
+    {% load static %}
+    <img src="{% static 'assets/lets_a_go.jpg' %}" class="img-fluid" alt=":D">
 </div>
 {% endblock %}
