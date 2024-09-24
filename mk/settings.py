@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # Apps
     "mk_form",
+    # pip install django-widget-tweaks
+    "widget_tweaks"
 ]
 
 MIDDLEWARE = [
