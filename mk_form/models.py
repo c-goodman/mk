@@ -1,14 +1,10 @@
 from django.db import models
+from datetime import datetime
 
 
 class BoolCategory(models.TextChoices):
     YES = "Yes"
     NO = "No"
-
-
-class PlayerCategory(models.TextChoices):
-    RANDY = "Randy"
-    COOPER = "Cooper"
 
 
 class GameTypeCategory(models.TextChoices):
@@ -33,6 +29,14 @@ class MapCategory(models.TextChoices):
     TT = ("Toad's Turnpike", "Toad's Turnpike")
     WS = ("Wario Stadium", "Wario Stadium")
     YV = ("Yoshi Valley", "Yoshi Valley")
+
+
+class Player(models.Model):
+
+    name = models.CharField(unique=True, default="", max_length=20)
+
+    def __str__(self):
+        return self.name
 
 
 class Data(models.Model):
@@ -62,30 +66,30 @@ class Data(models.Model):
 
     player_first = models.CharField(
         verbose_name="Player (1st)",
-        max_length=40,
-        choices=PlayerCategory.choices,
-        default=PlayerCategory.RANDY,
+        max_length=20,
+        blank=True,
+        null=True,
     )
 
     player_second = models.CharField(
         verbose_name="Player (2nd)",
-        max_length=40,
-        choices=PlayerCategory.choices,
-        default=PlayerCategory.RANDY,
+        max_length=20,
+        blank=True,
+        null=True,
     )
 
     player_third = models.CharField(
         verbose_name="Player (3rd)",
-        max_length=40,
-        choices=PlayerCategory.choices,
-        default=PlayerCategory.RANDY,
+        max_length=20,
+        blank=True,
+        null=True,
     )
 
     player_fourth = models.CharField(
         verbose_name="Player (4th)",
-        max_length=40,
-        choices=PlayerCategory.choices,
-        default=PlayerCategory.RANDY,
+        max_length=20,
+        blank=True,
+        null=True,
     )
 
     map_choice = models.CharField(
