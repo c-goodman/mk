@@ -4,7 +4,7 @@ from django.views.generic import CreateView, DetailView, ListView, UpdateView
 from django.views.generic.edit import DeleteView
 
 from mk_form.models import Data
-from mk_form.forms import DataForm, DataModelForm
+from mk_form.forms import DataModelForm
 
 
 class HomeView(TemplateView):
