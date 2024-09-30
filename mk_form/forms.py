@@ -95,7 +95,6 @@ class DataModelForm(forms.ModelForm):
                 Div(
                     Row(HTML("<h4>General</h4>")),
                     Row(
-                        Column("new_session", css_class="col me-auto"),
                         Column("game_type", css_class="col me-auto"),
                         Column("map_choice", css_class="col me-auto"),
                         css_class="align-items-end justify-content-center",
@@ -127,13 +126,10 @@ class DataModelForm(forms.ModelForm):
     class Meta:
         model = Data
         fields = [
-            "uid",
-            "new_session",
-            "session_uid",
             "game_type",
+            "map_choice",
             "player_first",
             "player_second",
             "player_third",
             "player_fourth",
-            "map_choice",
         ]

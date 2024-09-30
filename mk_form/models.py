@@ -43,27 +43,21 @@ class Player(models.Model):
 
 class Data(models.Model):
 
-    uid = models.AutoField(
-        verbose_name="UID", primary_key=True, default=1, auto_created=True, unique=True
-    )
-
     created = models.DateTimeField(auto_now_add=True)
     edited = models.DateTimeField(auto_now=True)
-
-    new_session = models.CharField(
-        verbose_name="New Session",
-        max_length=3,
-        choices=BoolCategory.choices,
-        default=BoolCategory.NO,
-    )
-
-    session_uid = models.IntegerField(verbose_name="Session UID", default=1)
 
     game_type = models.CharField(
         verbose_name="Game Type",
         max_length=1,
         choices=GameTypeCategory.choices,
         default=GameTypeCategory.FOUR,
+    )
+
+    map_choice = models.CharField(
+        verbose_name="Map",
+        max_length=20,
+        choices=MapCategory.choices,
+        default=MapCategory.BB,
     )
 
     player_first = models.CharField(
@@ -94,14 +88,5 @@ class Data(models.Model):
         null=True,
     )
 
-    map_choice = models.CharField(
-        verbose_name="Map",
-        max_length=20,
-        choices=MapCategory.choices,
-        default=MapCategory.BB,
-    )
-
-    season = models.SmallIntegerField(verbose_name="Season", default=0)
-
     def __str__(self):
-        return f"UID: {self.uid}"
+        return f"UID: {self.pk}"

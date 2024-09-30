@@ -8,9 +8,15 @@
     {% csrf_token %}
     {% crispy form %}
 
-    {% for error in field.errors %}
+    {% for error in form.errors %}
     <div class="alert alert-danger my-5">
       {{ error }}
+    </div>
+    {% endfor %}
+
+    {% for nf_error in form.non_field_errors %}
+    <div class="alert alert-danger my-5">
+      {{ nf_error }}
     </div>
     {% endfor %}
 
