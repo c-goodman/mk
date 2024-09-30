@@ -28,6 +28,8 @@ urlpatterns = [
     path("data_detail/<int:pk>", views.DataDetailView.as_view(), name="data_detail"),
     path("data_list/<int:pk>/edit", views.DataUpdateView.as_view(), name="data_edit"),
     path(
-        "data_list/<int:pk>/delete", views.DataUpdateView.as_view(), name="data_delete"
+        "data_list/<int:pk>/delete",
+        views.DataDeleteView.as_view(),
+        name="data_delete",
     ),
 ]
