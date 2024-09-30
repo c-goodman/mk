@@ -14,7 +14,7 @@ class HomeView(TemplateView):
 
 class DataCreateView(CreateView):
     model = Data
-    success_url = "/"
+    success_url = "/data_list"
     form_class = DataModelForm
     template_name = "mk_form/data_form.html"
     extra_context = {"today": datetime.today()}
