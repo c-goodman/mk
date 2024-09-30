@@ -3,10 +3,10 @@
 <h1 class="my-5">Recorded Data</h1>
 
 <div class="row row-cols3 g2">
-    {% for form in data_form %}
+    {% for form in data_list %}
     <div class="col">
         <div class="p3 border">
-            <a href="{% url 'data_detail' pk=data_form.id %}" class="text-dark text-decoration-none">
+            <a href="{% url 'data_detail' pk=form.id %}" class="text-dark text-decoration-none">
                 <h3>UID: {{ form.uid }}</h3>
                 <p>
                     Game Type: {{ form.game_type }}
