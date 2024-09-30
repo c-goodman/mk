@@ -33,7 +33,9 @@ class MapCategory(models.TextChoices):
 
 class Player(models.Model):
 
-    name = models.CharField(unique=True, default="", max_length=20)
+    name = models.CharField(
+        unique=True, default="None", max_length=20, blank=True, null=True
+    )
 
     def __str__(self):
         return self.name
