@@ -117,7 +117,9 @@ class DataModelForm(forms.ModelForm):
             ),
             HTML("<br>"),
             Div(
-                HTML("<a href='{% url 'home'%}' class='btn btn-secondary'>Cancel</a>"),
+                HTML(
+                    "<a href='{% url 'data_list'%}' class='btn btn-secondary'>Cancel</a>"
+                ),
                 Submit("submit", "Submit", css_class="col"),
                 css_class="align-items-end justify-content-start",
             ),
