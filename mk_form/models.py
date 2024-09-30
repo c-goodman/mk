@@ -89,7 +89,7 @@ class Data(models.Model):
     )
 
     def __str__(self):
-        return f"UID: {self.pk}"
+        return f"UID: {self.id}"
 
     def get_fields(self):
         return [
