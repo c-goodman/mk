@@ -1,26 +1,19 @@
 {% extends 'base.html' %}
 {% block content %}
 {% load widget_tweaks %}
+{% load crispy_forms_tags %}
 
 <div class="container">
   <form method="POST">
     {% csrf_token %}
-    {% for field in form %}
+    {% crispy form %}
 
-    <div class="form-group">
-      {{ field.label_tag }}
-      {% render_field field class="form-control" %}
-
-      {% if field.errors %}
-      <div class="alert alert-danger my-5">
-        {{field.errors}}
-      </div>
-
-      {% endif %}
+    {% for error in field.errors %}
+    <div class="alert alert-danger my-5">
+      {{ error }}
     </div>
     {% endfor %}
-    <button type="submit" class="btn btn-primary my-5">Submit</button>
-    <a href="{% url 'home'%}" class="btn btn-secondary">Cancel</a>
+
   </form>
 </div>
 
