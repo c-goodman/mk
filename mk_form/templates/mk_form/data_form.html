@@ -1,9 +1,14 @@
 {% extends 'base.html' %}
 {% block content %}
-{% load widget_tweaks %}
 {% load crispy_forms_tags %}
 
 <div class="container">
+
+  <br>
+  <h1>Enter Data</h1>
+  <p>Date: {{ today }}</p>
+  <br>
+
   <form method="POST">
     {% csrf_token %}
     {% crispy form %}
