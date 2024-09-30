@@ -17,3 +17,26 @@ class DataCreateView(CreateView):
     success_url = "/"
     form_class = DataModelForm
     template_name = "mk_form/data_form.html"
+
+
+class DataListView(ListView):
+    model = Data
+    success_url = "data_forms"
+    template_name = "mk_form/data_list.html"
+
+class DataDetailView(DetailView):
+    model = Data
+    context_object_name = "data_form"
+
+
+class DataUpdateView(UpdateView):
+    model = Data
+    success_url = "/data_list"
+    form_class = DataModelForm
+    extra_content = {"today": datetime.today()}
+
+class DataDeleteView(DeleteView):
+    model = Data
+    success_url = "/data_list"
+    template_name = "mk_form/data_delete.html"
+    context_object_name = "data_form"

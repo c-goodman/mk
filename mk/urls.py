@@ -24,4 +24,10 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", views.HomeView.as_view(), name="home"),
     path("data_form", views.DataCreateView.as_view(), name="form"),
+    path("data_list", views.DataListView.as_view(), name="data_list"),
+    path("data_detail/<int:pk>", views.DataDetailView.as_view(), name="data_detail"),
+    path("data_list/<int:pk>/edit", views.DataUpdateView.as_view(), name="data_edit"),
+    path(
+        "data_list/<int:pk>/delete", views.DataUpdateView.as_view(), name="data_delete"
+    ),
 ]
