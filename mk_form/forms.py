@@ -25,20 +25,15 @@ class DataModelForm(forms.ModelForm):
         game_type = cleaned_data.get("game_type")
 
         # Two Player Games
-        # 2P: Player First can not be "None"
-        if (game_type == GameTypeCategory.TWO) & ((player_first == "None")):
+        # 2P: Player First or Second can not be "None"
+        if (game_type == GameTypeCategory.TWO) & (
+            (player_first == "None") | (player_second == "None")
+        ):
             msg = ValidationError(
-                message=f"Game Type: {GameTypeCategory.TWO}, Player First can not be 'None'."
+                message=f"Game Type: {GameTypeCategory.TWO}, Player First and/or Second can not be 'None'."
             )
 
             self.add_error("player_first", msg)
-
-        # 2P: Player Second can not be "None"
-        if (game_type == GameTypeCategory.TWO) & ((player_second == "None")):
-            msg = ValidationError(
-                message=f"Game Type: {GameTypeCategory.TWO}, Player Second can not be 'None'."
-            )
-
             self.add_error("player_second", msg)
 
         # 2P: Player First can not equal Player Second
@@ -64,8 +59,76 @@ class DataModelForm(forms.ModelForm):
             self.add_error("player_fourth", msg)
 
         # 3 Player Games
+        # 3P: Player First, Second or Third can not be "None"
+        if (game_type == GameTypeCategory.THREE) & (
+            (player_first == "None")
+            | (player_second == "None")
+            | (player_third == "None")
+        ):
+            msg = ValidationError(
+                message=f"Game Type: {GameTypeCategory.THREE}, Player First, Second and/or Third can not be 'None'."
+            )
+
+            self.add_error("player_first", msg)
+            self.add_error("player_second", msg)
+            self.add_error("player_third", msg)
+
+        # 3P: Players must be unique
+        if (game_type == GameTypeCategory.THREE) & (
+            (player_first == player_second)
+            | (player_second == player_third)
+            | (player_third == player_first)
+        ):
+            msg = ValidationError(
+                message=f"Game Type: {GameTypeCategory.THREE}, Player First, Second, and Third must be unique."
+            )
+
+            self.add_error("game_type", msg)
+            self.add_error("player_first", msg)
+            self.add_error("player_second", msg)
+            self.add_error("player_third", msg)
+
+        # 3P: Player Third and Fourth must be 'None'
+        if (game_type == GameTypeCategory.THREE) & (player_fourth != "None"):
+            msg = ValidationError(
+                message=f"Game Type: {GameTypeCategory.THREE}, Player Fourth must be 'None'."
+            )
+
+            self.add_error("game_type", msg)
+            self.add_error("player_fourth", msg)
 
         # 4 Player Games
+        # 4P: Player First, Second or Third can not be "None"
+        if (game_type == GameTypeCategory.FOUR) & (
+            (player_first == "None")
+            | (player_second == "None")
+            | (player_third == "None")
+            | (player_fourth == "None")
+        ):
+            msg = ValidationError(
+                message=f"Game Type: {GameTypeCategory.FOUR}, Player First, Second and/or Third can not be 'None'."
+            )
+
+            self.add_error("player_first", msg)
+            self.add_error("player_second", msg)
+            self.add_error("player_third", msg)
+            self.add_error("player_fourth", msg)
+
+        # 4P: Players must be unique
+        if (game_type == GameTypeCategory.FOUR) & (
+            (player_first == player_second)
+            | (player_second == player_third)
+            | (player_third == player_first)
+        ):
+            msg = ValidationError(
+                message=f"Game Type: {GameTypeCategory.FOUR}, Player First, Second, Third and Fourth must be unique."
+            )
+
+            self.add_error("game_type", msg)
+            self.add_error("player_first", msg)
+            self.add_error("player_second", msg)
+            self.add_error("player_third", msg)
+            self.add_error("player_fourth", msg)
 
     def __init__(self, *args, **kwargs):
         super(DataModelForm, self).__init__(*args, **kwargs)
