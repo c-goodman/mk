@@ -2,7 +2,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div, Row, Column, HTML, Submit
-from crispy_bootstrap5.bootstrap5 import BS5Accordion
+# from crispy_bootstrap5.bootstrap5 import BS5Accordion
 
 from mk_form.models import Data, Player, GameTypeCategory
 
