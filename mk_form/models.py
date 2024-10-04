@@ -30,6 +30,17 @@ class MapCategory(models.TextChoices):
     YV = ("Yoshi Valley", "Yoshi Valley")
 
 
+class CharacterCategory(models.TextChoices):
+    PEACH = ("Peach", "Peach")
+    YOSHI = ("Yoshi", "Yoshi")
+    TOAD = ("Toad", "Toad")
+    BOWSER = ("Bowser", "Bowser")
+    LUIGI = ("Luigi", "Luigi")
+    MARIO = ("Mario", "Mario")
+    WARIO = ("Wario", "Wario")
+    DK = ("D.K.", "D.K.")
+
+
 class Player(models.Model):
 
     name = models.CharField(
@@ -83,6 +94,38 @@ class Data(models.Model):
     player_fourth = models.CharField(
         verbose_name="Player (4th)",
         max_length=20,
+        blank=True,
+        null=True,
+    )
+
+    character_first = models.CharField(
+        verbose_name="Character (1st)",
+        max_length=6,
+        choices=CharacterCategory.choices,
+        blank=True,
+        null=True,
+    )
+
+    character_second = models.CharField(
+        verbose_name="Character (2nd)",
+        max_length=6,
+        choices=CharacterCategory.choices,
+        blank=True,
+        null=True,
+    )
+
+    character_third = models.CharField(
+        verbose_name="Character (3rd)",
+        max_length=6,
+        choices=CharacterCategory.choices,
+        blank=True,
+        null=True,
+    )
+
+    character_fourth = models.CharField(
+        verbose_name="Character (4th)",
+        max_length=6,
+        choices=CharacterCategory.choices,
         blank=True,
         null=True,
     )
