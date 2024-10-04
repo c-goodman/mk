@@ -152,6 +152,7 @@ class DataModelForm(forms.ModelForm):
         self.helper.form_method = "post"
         self.helper.form_class = "form-horizontal"
 
+        # Define Layout
         self.helper.layout = Layout(
             Div(
                 HTML("<br>"),
