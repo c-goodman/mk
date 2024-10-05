@@ -43,12 +43,15 @@ class DataModelForm(forms.ModelForm):
             game_condition = (game_type_variable == game_type_value) & condition
 
             if game_condition:
-                msg = ValidationError(message=f"Game Type: {game_type}, {message}")
+                msg = ValidationError(
+                    message=f"Game Type: {game_type_value}, {message}"
+                )
 
                 for field in fields:
                     self.add_error(field, msg)
 
         # Two Player Games
+        # PRIMARY FIELDS ARE NOT NULL
         # 2P: Player First or Second can not be "None"
         validate_game_fields(
             fields=["player_first"],
@@ -63,18 +66,27 @@ class DataModelForm(forms.ModelForm):
             condition=(player_second == "None"),
             game_type_variable=game_type,
             game_type_value=GameTypeCategory.TWO,
-            message="Player First can not be 'None'.",
+            message="Player Second can not be 'None'.",
         )
 
-        # 2P: Player First can not equal Player Second
+        # 2P: Character First and Second can not be 'None'
         validate_game_fields(
-            fields=["player_first", "player_second"],
-            condition=(player_first == player_second),
+            fields=["character_first"],
+            condition=(character_first is None),
             game_type_variable=game_type,
             game_type_value=GameTypeCategory.TWO,
-            message="Player First can not be equal to Player Second.",
+            message="Character First can not be 'None'.",
         )
 
+        validate_game_fields(
+            fields=["character_second"],
+            condition=(character_second is None),
+            game_type_variable=game_type,
+            game_type_value=GameTypeCategory.TWO,
+            message="Character Second can not be 'None'.",
+        )
+
+        # NOT REQUIRED FIELDS ARE NULL
         # 2P: Player Third and Fourth must be 'None'
         validate_game_fields(
             fields=["player_third"],
@@ -92,113 +104,284 @@ class DataModelForm(forms.ModelForm):
             message="Player Fourth must be 'None'.",
         )
 
-        # 2P: Character First can not equal Character Second
-        if (game_type == GameTypeCategory.TWO) & (
-            (character_first == character_second)
-        ):
-            msg = ValidationError(
-                message=f"Game Type: {GameTypeCategory.TWO}, Character First can not be equal to Character Second."
-            )
-
-            self.add_error("game_type", msg)
-            self.add_error("character_first", msg)
-            self.add_error("character_second", msg)
-
-        # 2P: Character Third and Fourth can not be 'None'
-        if (game_type == GameTypeCategory.TWO) & (
-            (character_first is None) | (character_second is None)
-        ):
-            msg = ValidationError(
-                message=f"Game Type: {GameTypeCategory.TWO}, Character First and/or Second can not be 'None'."
-            )
-
-            self.add_error("game_type", msg)
-            self.add_error("character_first", msg)
-            self.add_error("character_second", msg)
-
         # 2P: Character Third and Fourth must be 'None'
-        if (game_type == GameTypeCategory.TWO) & (
-            (character_third is not None) | (character_fourth is not None)
-        ):
-            msg = ValidationError(
-                message=f"Game Type: {GameTypeCategory.TWO}, Character Third and Fourth must be 'None'."
-            )
+        validate_game_fields(
+            fields=["character_third"],
+            condition=(character_third is not None),
+            game_type_variable=game_type,
+            game_type_value=GameTypeCategory.TWO,
+            message="Character Third must be 'None'.",
+        )
 
-            self.add_error("game_type", msg)
-            self.add_error("character_third", msg)
-            self.add_error("character_fourth", msg)
+        validate_game_fields(
+            fields=["character_fourth"],
+            condition=(character_fourth is not None),
+            game_type_variable=game_type,
+            game_type_value=GameTypeCategory.TWO,
+            message="Character Fourth must be 'None'.",
+        )
+
+        # PRIMARY FIELDS ARE UNIQUE
+        # 2P: Player First can not equal Player Second
+        validate_game_fields(
+            fields=["player_first", "player_second"],
+            condition=(player_first == player_second),
+            game_type_variable=game_type,
+            game_type_value=GameTypeCategory.TWO,
+            message="Player First can not be equal to Player Second.",
+        )
+
+        # 2P: Character First can not equal Character Second
+        validate_game_fields(
+            fields=["character_first", "character_second"],
+            condition=(
+                len(
+                    list(
+                        set(
+                            [
+                                player_first,
+                                player_second,
+                            ]
+                        )
+                    )
+                )
+                != 2
+            ),
+            game_type_variable=game_type,
+            game_type_value=GameTypeCategory.TWO,
+            message="Character First can not be equal to Character Second.",
+        )
 
         # 3 Player Games
+        # PRIMARY FIELDS ARE NOT NULL
         # 3P: Player First, Second or Third can not be "None"
-        if (game_type == GameTypeCategory.THREE) & (
-            (player_first == "None")
-            | (player_second == "None")
-            | (player_third == "None")
-        ):
-            msg = ValidationError(
-                message=f"Game Type: {GameTypeCategory.THREE}, Player First, Second and/or Third can not be 'None'."
-            )
+        validate_game_fields(
+            fields=["player_first"],
+            condition=(player_first == "None"),
+            game_type_variable=game_type,
+            game_type_value=GameTypeCategory.THREE,
+            message="Player First can not be 'None'.",
+        )
 
-            self.add_error("player_first", msg)
-            self.add_error("player_second", msg)
-            self.add_error("player_third", msg)
+        validate_game_fields(
+            fields=["player_second"],
+            condition=(player_second == "None"),
+            game_type_variable=game_type,
+            game_type_value=GameTypeCategory.THREE,
+            message="Player Second can not be 'None'.",
+        )
 
+        validate_game_fields(
+            fields=["player_third"],
+            condition=(player_third == "None"),
+            game_type_variable=game_type,
+            game_type_value=GameTypeCategory.THREE,
+            message="Player Third can not be 'None'.",
+        )
+
+        # 3P: Character First, Second or Third can not be "None"
+        validate_game_fields(
+            fields=["character_first"],
+            condition=(character_first is None),
+            game_type_variable=game_type,
+            game_type_value=GameTypeCategory.THREE,
+            message="Character First can not be 'None'.",
+        )
+
+        validate_game_fields(
+            fields=["character_second"],
+            condition=(character_second is None),
+            game_type_variable=game_type,
+            game_type_value=GameTypeCategory.THREE,
+            message="Character Second can not be 'None'.",
+        )
+
+        validate_game_fields(
+            fields=["character_third"],
+            condition=(character_third is None),
+            game_type_variable=game_type,
+            game_type_value=GameTypeCategory.THREE,
+            message="Character Third can not be 'None'.",
+        )
+
+        # NOT REQUIRED FIELDS ARE NULL
+        # 3P: Player Fourth must be 'None'
+        validate_game_fields(
+            fields=["player_fourth"],
+            condition=(player_fourth != "None"),
+            game_type_variable=game_type,
+            game_type_value=GameTypeCategory.THREE,
+            message="Player Fourth must be 'None'.",
+        )
+
+        validate_game_fields(
+            fields=["character_fourth"],
+            condition=(character_fourth is not None),
+            game_type_variable=game_type,
+            game_type_value=GameTypeCategory.THREE,
+            message="Character Fourth must be 'None'.",
+        )
+
+        # PRIMARY FIELDS ARE UNIQUE
         # 3P: Players must be unique
-        if (game_type == GameTypeCategory.THREE) & (
-            (player_first == player_second)
-            | (player_second == player_third)
-            | (player_third == player_first)
-        ):
-            msg = ValidationError(
-                message=f"Game Type: {GameTypeCategory.THREE}, Player First, Second, and Third must be unique."
-            )
+        validate_game_fields(
+            fields=["player_first", "player_second", "player_third"],
+            condition=(
+                (player_first == player_second)
+                | (player_second == player_third)
+                | (player_third == player_first)
+            ),
+            game_type_variable=game_type,
+            game_type_value=GameTypeCategory.THREE,
+            message="Player First, Second, and Third must be unique.",
+        )
 
-            self.add_error("game_type", msg)
-            self.add_error("player_first", msg)
-            self.add_error("player_second", msg)
-            self.add_error("player_third", msg)
-
-        # 3P: Player Third and Fourth must be 'None'
-        if (game_type == GameTypeCategory.THREE) & (player_fourth != "None"):
-            msg = ValidationError(
-                message=f"Game Type: {GameTypeCategory.THREE}, Player Fourth must be 'None'."
-            )
-
-            self.add_error("game_type", msg)
-            self.add_error("player_fourth", msg)
+        # 3P: Characters must be unique
+        validate_game_fields(
+            fields=["character_first", "character_second", "character_third"],
+            condition=(
+                len(
+                    list(
+                        set(
+                            [
+                                player_first,
+                                player_second,
+                                player_third,
+                            ]
+                        )
+                    )
+                )
+                != 3
+            ),
+            game_type_variable=game_type,
+            game_type_value=GameTypeCategory.THREE,
+            message="Character First, Second, and Third must be unique.",
+        )
 
         # 4 Player Games
-        # 4P: Player First, Second or Third can not be "None"
-        if (game_type == GameTypeCategory.FOUR) & (
-            (player_first == "None")
-            | (player_second == "None")
-            | (player_third == "None")
-            | (player_fourth == "None")
-        ):
-            msg = ValidationError(
-                message=f"Game Type: {GameTypeCategory.FOUR}, Player First, Second and/or Third can not be 'None'."
-            )
+        # PRIMARY FIELDS ARE NOT NULL
+        # 4P: Player First, Second, Third or Fourth can not be "None"
+        validate_game_fields(
+            fields=["player_first"],
+            condition=(player_first == "None"),
+            game_type_variable=game_type,
+            game_type_value=GameTypeCategory.FOUR,
+            message="Player First can not be 'None'.",
+        )
 
-            self.add_error("player_first", msg)
-            self.add_error("player_second", msg)
-            self.add_error("player_third", msg)
-            self.add_error("player_fourth", msg)
+        validate_game_fields(
+            fields=["player_second"],
+            condition=(player_second == "None"),
+            game_type_variable=game_type,
+            game_type_value=GameTypeCategory.FOUR,
+            message="Player Second can not be 'None'.",
+        )
 
+        validate_game_fields(
+            fields=["player_third"],
+            condition=(player_third == "None"),
+            game_type_variable=game_type,
+            game_type_value=GameTypeCategory.FOUR,
+            message="Player Third can not be 'None'.",
+        )
+
+        validate_game_fields(
+            fields=["player_fourth"],
+            condition=(player_fourth == "None"),
+            game_type_variable=game_type,
+            game_type_value=GameTypeCategory.FOUR,
+            message="Player Fourth can not be 'None'.",
+        )
+
+        # 4P: Characters First, Second, Third or Fourth can not be "None"
+        validate_game_fields(
+            fields=["character_first"],
+            condition=(character_first is None),
+            game_type_variable=game_type,
+            game_type_value=GameTypeCategory.FOUR,
+            message="Character First can not be 'None'.",
+        )
+
+        validate_game_fields(
+            fields=["character_second"],
+            condition=(character_second is None),
+            game_type_variable=game_type,
+            game_type_value=GameTypeCategory.FOUR,
+            message="Character Second can not be 'None'.",
+        )
+
+        validate_game_fields(
+            fields=["character_third"],
+            condition=(character_third is None),
+            game_type_variable=game_type,
+            game_type_value=GameTypeCategory.FOUR,
+            message="Character Third can not be 'None'.",
+        )
+
+        validate_game_fields(
+            fields=["character_fourth"],
+            condition=(character_fourth is None),
+            game_type_variable=game_type,
+            game_type_value=GameTypeCategory.FOUR,
+            message="Character Fourth can not be 'None'.",
+        )
+
+        # PRIMARY FIELDS ARE UNIQUE
         # 4P: Players must be unique
-        if (game_type == GameTypeCategory.FOUR) & (
-            (player_first == player_second)
-            | (player_second == player_third)
-            | (player_third == player_first)
-        ):
-            msg = ValidationError(
-                message=f"Game Type: {GameTypeCategory.FOUR}, Player First, Second, Third and Fourth must be unique."
-            )
+        validate_game_fields(
+            fields=[
+                "player_first",
+                "player_second",
+                "player_third",
+                "player_fourth",
+            ],
+            condition=(
+                len(
+                    list(
+                        set(
+                            [
+                                player_first,
+                                player_second,
+                                player_third,
+                                player_fourth,
+                            ]
+                        )
+                    )
+                )
+                != 4
+            ),
+            game_type_variable=game_type,
+            game_type_value=GameTypeCategory.FOUR,
+            message="Player First, Second, Third and Fourth must be unique.",
+        )
 
-            self.add_error("game_type", msg)
-            self.add_error("player_first", msg)
-            self.add_error("player_second", msg)
-            self.add_error("player_third", msg)
-            self.add_error("player_fourth", msg)
+        # 4P: Characters must be unique
+        validate_game_fields(
+            fields=[
+                "character_first",
+                "character_second",
+                "character_third",
+                "character_fourth",
+            ],
+            condition=(
+                len(
+                    list(
+                        set(
+                            [
+                                character_first,
+                                character_second,
+                                character_third,
+                                character_fourth,
+                            ]
+                        )
+                    )
+                )
+                != 4
+            ),
+            game_type_variable=game_type,
+            game_type_value=GameTypeCategory.FOUR,
+            message="Character First, Second, Third and Fourth must be unique.",
+        )
 
     def __init__(self, *args, **kwargs):
         super(DataModelForm, self).__init__(*args, **kwargs)
